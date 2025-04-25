@@ -17,31 +17,6 @@ describe('/jobs', () => {
 
   describe('PUT /jobs', () => {
     afterEach(async () => {
-      await utils.jobCommand(admin.accessToken, JobName.MetadataExtraction, {
-        command: JobCommand.Resume,
-        force: false,
-      });
-
-      await utils.jobCommand(admin.accessToken, JobName.ThumbnailGeneration, {
-        command: JobCommand.Resume,
-        force: false,
-      });
-
-      await utils.jobCommand(admin.accessToken, JobName.FaceDetection, {
-        command: JobCommand.Resume,
-        force: false,
-      });
-
-      await utils.jobCommand(admin.accessToken, JobName.SmartSearch, {
-        command: JobCommand.Resume,
-        force: false,
-      });
-
-      await utils.jobCommand(admin.accessToken, JobName.DuplicateDetection, {
-        command: JobCommand.Resume,
-        force: false,
-      });
-
       const config = await utils.getSystemConfig(admin.accessToken);
       config.machineLearning.duplicateDetection.enabled = false;
       config.machineLearning.enabled = false;
@@ -83,11 +58,6 @@ describe('/jobs', () => {
       });
 
       await utils.waitForQueueFinish(admin.accessToken, 'metadataExtraction');
-
-      await utils.jobCommand(admin.accessToken, JobName.MetadataExtraction, {
-        command: JobCommand.Resume,
-        force: false,
-      });
 
       await utils.jobCommand(admin.accessToken, JobName.MetadataExtraction, {
         command: JobCommand.Start,
@@ -168,11 +138,6 @@ describe('/jobs', () => {
       await utils.waitForQueueFinish(admin.accessToken, JobName.ThumbnailGeneration);
 
       await utils.jobCommand(admin.accessToken, JobName.ThumbnailGeneration, {
-        command: JobCommand.Resume,
-        force: false,
-      });
-
-      await utils.jobCommand(admin.accessToken, JobName.ThumbnailGeneration, {
         command: JobCommand.Start,
         force: false,
       });
@@ -199,11 +164,6 @@ describe('/jobs', () => {
       const assetBefore = await utils.getAssetInfo(admin.accessToken, id);
 
       cpSync(`${testAssetDir}/albums/nature/notocactus_minimus.jpg`, path);
-
-      await utils.jobCommand(admin.accessToken, JobName.ThumbnailGeneration, {
-        command: JobCommand.Resume,
-        force: false,
-      });
 
       // This runs the missing thumbnail job
       await utils.jobCommand(admin.accessToken, JobName.ThumbnailGeneration, {

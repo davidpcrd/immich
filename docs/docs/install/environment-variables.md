@@ -29,20 +29,20 @@ These environment variables are used by the `docker-compose.yml` file and do **N
 
 ## General
 
-| Variable                            | Description                                                                               |           Default            | Containers               | Workers            |
-| :---------------------------------- | :---------------------------------------------------------------------------------------- | :--------------------------: | :----------------------- | :----------------- |
-| `TZ`                                | Timezone                                                                                  |        <sup>\*1</sup>        | server                   | microservices      |
-| `IMMICH_ENV`                        | Environment (production, development)                                                     |         `production`         | server, machine learning | api, microservices |
-| `IMMICH_LOG_LEVEL`                  | Log level (verbose, debug, log, warn, error)                                              |            `log`             | server, machine learning | api, microservices |
+| Variable                            | Description                                                                             |           Default            | Containers               | Workers            |
+| :---------------------------------- | :-------------------------------------------------------------------------------------- | :--------------------------: | :----------------------- | :----------------- |
+| `TZ`                                | Timezone                                                                                |        <sup>\*1</sup>        | server                   | microservices      |
+| `IMMICH_ENV`                        | Environment (production, development)                                                   |         `production`         | server, machine learning | api, microservices |
+| `IMMICH_LOG_LEVEL`                  | Log level (verbose, debug, log, warn, error)                                            |            `log`             | server, machine learning | api, microservices |
 | `IMMICH_MEDIA_LOCATION`             | Media location inside the container ⚠️**You probably shouldn't set this**<sup>\*2</sup>⚠️ |   `./upload`<sup>\*3</sup>   | server                   | api, microservices |
-| `IMMICH_CONFIG_FILE`                | Path to config file                                                                       |                              | server                   | api, microservices |
-| `NO_COLOR`                          | Set to `true` to disable color-coded log output                                           |           `false`            | server, machine learning |                    |
-| `CPU_CORES`                         | Number of cores available to the Immich server                                            | auto-detected CPU core count | server                   |                    |
-| `IMMICH_API_METRICS_PORT`           | Port for the OTEL metrics                                                                 |            `8081`            | server                   | api                |
-| `IMMICH_MICROSERVICES_METRICS_PORT` | Port for the OTEL metrics                                                                 |            `8082`            | server                   | microservices      |
-| `IMMICH_PROCESS_INVALID_IMAGES`     | When `true`, generate thumbnails for invalid images                                       |                              | server                   | microservices      |
-| `IMMICH_TRUSTED_PROXIES`            | List of comma-separated IPs set as trusted proxies                                        |                              | server                   | api                |
-| `IMMICH_IGNORE_MOUNT_CHECK_ERRORS`  | See [System Integrity](/docs/administration/system-integrity)                             |                              | server                   | api, microservices |
+| `IMMICH_CONFIG_FILE`                | Path to config file                                                                     |                              | server                   | api, microservices |
+| `NO_COLOR`                          | Set to `true` to disable color-coded log output                                         |           `false`            | server, machine learning |                    |
+| `CPU_CORES`                         | Number of cores available to the Immich server                                          | auto-detected CPU core count | server                   |                    |
+| `IMMICH_API_METRICS_PORT`           | Port for the OTEL metrics                                                               |            `8081`            | server                   | api                |
+| `IMMICH_MICROSERVICES_METRICS_PORT` | Port for the OTEL metrics                                                               |            `8082`            | server                   | microservices      |
+| `IMMICH_PROCESS_INVALID_IMAGES`     | When `true`, generate thumbnails for invalid images                                     |                              | server                   | microservices      |
+| `IMMICH_TRUSTED_PROXIES`            | List of comma-separated IPs set as trusted proxies                                      |                              | server                   | api                |
+| `IMMICH_IGNORE_MOUNT_CHECK_ERRORS`  | See [System Integrity](/docs/administration/system-integrity)                           |                              | server                   | api, microservices |
 
 \*1: `TZ` should be set to a `TZ identifier` from [this list][tz-list]. For example, `TZ="Etc/UTC"`.
 `TZ` is used by `exiftool` as a fallback in case the timezone cannot be determined from the image metadata. It is also used for logfile timestamps and cron job execution.
@@ -97,54 +97,6 @@ You can require SSL by adding `?sslmode=require` to the end of the `DB_URL` stri
 When `DB_URL` is defined, the `DB_HOSTNAME`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD` and `DB_DATABASE_NAME` database variables are ignored.
 
 :::
-
-## Redis
-
-| Variable         | Description    | Default | Containers |
-| :--------------- | :------------- | :-----: | :--------- |
-| `REDIS_URL`      | Redis URL      |         | server     |
-| `REDIS_SOCKET`   | Redis socket   |         | server     |
-| `REDIS_HOSTNAME` | Redis host     | `redis` | server     |
-| `REDIS_PORT`     | Redis port     | `6379`  | server     |
-| `REDIS_USERNAME` | Redis username |         | server     |
-| `REDIS_PASSWORD` | Redis password |         | server     |
-| `REDIS_DBINDEX`  | Redis DB index |   `0`   | server     |
-
-:::info
-All `REDIS_` variables must be provided to all Immich workers, including `api` and `microservices`.
-
-`REDIS_URL` must start with `ioredis://` and then include a `base64` encoded JSON string for the configuration.
-More information can be found in the upstream [ioredis] documentation.
-
-When `REDIS_URL` or `REDIS_SOCKET` are defined, the `REDIS_HOSTNAME`, `REDIS_PORT`, `REDIS_USERNAME`, `REDIS_PASSWORD`, and `REDIS_DBINDEX` variables are ignored.
-:::
-
-Redis (Sentinel) URL example JSON before encoding:
-
-<details>
-<summary>JSON</summary>
-
-```json
-{
-  "sentinels": [
-    {
-      "host": "redis-sentinel-node-0",
-      "port": 26379
-    },
-    {
-      "host": "redis-sentinel-node-1",
-      "port": 26379
-    },
-    {
-      "host": "redis-sentinel-node-2",
-      "port": 26379
-    }
-  ],
-  "name": "redis-sentinel"
-}
-```
-
-</details>
 
 ## Machine Learning
 
@@ -212,16 +164,10 @@ the `_FILE` variable should be set to the path of a file containing the variable
 | `DB_USERNAME`      | `DB_USERNAME_FILE`<sup>\*1</sup>            |
 | `DB_PASSWORD`      | `DB_PASSWORD_FILE`<sup>\*1</sup>            |
 | `DB_URL`           | `DB_URL_FILE`<sup>\*1</sup>                 |
-| `REDIS_PASSWORD`   | `REDIS_PASSWORD_FILE`<sup>\*2</sup>         |
 
 \*1: See the [official documentation][docker-secrets-docs] for
 details on how to use Docker Secrets in the Postgres image.
 
-\*2: See [this comment][docker-secrets-example] for an example of how
-to use a Docker secret for the password in the Redis container.
-
 [tz-list]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
-[docker-secrets-example]: https://github.com/docker-library/redis/issues/46#issuecomment-335326234
 [docker-secrets-docs]: https://github.com/docker-library/docs/tree/master/postgres#docker-secrets
 [docker-secrets]: https://docs.docker.com/engine/swarm/secrets/
-[ioredis]: https://ioredis.readthedocs.io/en/latest/README/#connect-to-redis

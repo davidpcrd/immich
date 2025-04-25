@@ -541,8 +541,6 @@ export type FaceDto = {
 };
 export type JobCountsDto = {
     active: number;
-    completed: number;
-    delayed: number;
     failed: number;
     paused: number;
     waiting: number;
@@ -3616,8 +3614,7 @@ export enum JobCommand {
     Start = "start",
     Pause = "pause",
     Resume = "resume",
-    Empty = "empty",
-    ClearFailed = "clear-failed"
+    Clear = "clear"
 }
 export enum MemoryType {
     OnThisDay = "on_this_day"

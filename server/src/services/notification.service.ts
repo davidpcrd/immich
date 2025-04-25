@@ -105,14 +105,16 @@ export class NotificationService extends BaseService {
       data: { id, recipientIds, delay: NotificationService.albumUpdateEmailDelayMs },
     };
 
-    const previousJobData = await this.jobRepository.removeJob(id, JobName.NOTIFY_ALBUM_UPDATE);
-    if (previousJobData && this.isAlbumUpdateJob(previousJobData)) {
-      for (const id of previousJobData.recipientIds) {
-        if (!recipientIds.includes(id)) {
-          recipientIds.push(id);
-        }
-      }
-    }
+    // todo: we can just insert a new job with the same key and that will be
+    // used instead
+    // const previousJobData = await this.jobRepository.removeJob(id, JobName.NOTIFY_ALBUM_UPDATE);
+    // if (previousJobData && this.isAlbumUpdateJob(previousJobData)) {
+    //   for (const id of previousJobData.recipientIds) {
+    //     if (!recipientIds.includes(id)) {
+    //       recipientIds.push(id);
+    //     }
+    //   }
+    // }
     await this.jobRepository.queue(job);
   }
 

@@ -9599,10 +9599,7 @@
       "JobCommand": {
         "enum": [
           "start",
-          "pause",
-          "resume",
-          "empty",
-          "clear-failed"
+          "clear"
         ],
         "type": "string"
       },
@@ -9629,16 +9626,7 @@
           "active": {
             "type": "integer"
           },
-          "completed": {
-            "type": "integer"
-          },
-          "delayed": {
-            "type": "integer"
-          },
           "failed": {
-            "type": "integer"
-          },
-          "paused": {
             "type": "integer"
           },
           "waiting": {
@@ -9647,10 +9635,7 @@
         },
         "required": [
           "active",
-          "completed",
-          "delayed",
           "failed",
-          "paused",
           "waiting"
         ],
         "type": "object"
@@ -9706,14 +9691,10 @@
         "properties": {
           "jobCounts": {
             "$ref": "#/components/schemas/JobCountsDto"
-          },
-          "queueStatus": {
-            "$ref": "#/components/schemas/QueueStatusDto"
           }
         },
         "required": [
-          "jobCounts",
-          "queueStatus"
+          "jobCounts"
         ],
         "type": "object"
       },
@@ -10860,21 +10841,6 @@
             "type": "boolean"
           }
         },
-        "type": "object"
-      },
-      "QueueStatusDto": {
-        "properties": {
-          "isActive": {
-            "type": "boolean"
-          },
-          "isPaused": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "isActive",
-          "isPaused"
-        ],
         "type": "object"
       },
       "RandomSearchDto": {

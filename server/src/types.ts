@@ -257,11 +257,8 @@ export interface INotifyAlbumUpdateJob extends IEntityJob, IDelayedJob {
 
 export interface JobCounts {
   active: number;
-  completed: number;
   failed: number;
-  delayed: number;
   waiting: number;
-  paused: number;
 }
 
 export interface QueueStatus {

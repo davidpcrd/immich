@@ -523,10 +523,7 @@ export enum JobName {
 
 export enum JobCommand {
   START = 'start',
-  PAUSE = 'pause',
-  RESUME = 'resume',
-  EMPTY = 'empty',
-  CLEAR_FAILED = 'clear-failed',
+  CLEAR = 'clear',
 }
 
 export enum JobStatus {
