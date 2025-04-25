@@ -1552,7 +1552,7 @@
   "select": "選擇",
   "select_album_cover": "選擇相簿封面",
   "select_all": "選擇全部",
-  "select_all_duplicates": "選擇所有重複項",
+  "select_all_duplicates": "保留所有重複項",
   "select_avatar_color": "選擇形象顏色",
   "select_face": "選擇臉孔",
   "select_featured_photo": "選擇特色照片",
